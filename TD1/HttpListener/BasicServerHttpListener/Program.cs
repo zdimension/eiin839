@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -10,8 +11,6 @@ namespace BasicServerHTTPlistener
     {
         private static void Main(string[] args)
         {
-            
-
             if (!HttpListener.IsSupported)
             {
                 Console.WriteLine("A more recent Windows version is required to use the HttpListener class.");
@@ -38,13 +37,13 @@ namespace BasicServerHTTPlistener
                     // with netsh http add urlacl url=http://localhost:xxxx/ user="Tout le monde"
                     // and netsh http add urlacl url=http://localhost:yyyy/ user="Tout le monde"
                     // user="Tout le monde" is language dependent, use user=Everyone in english 
-
                 }
             }
             else
             {
                 Console.WriteLine("Syntax error: the call must contain at least one web server url as argument");
             }
+
             listener.Start();
             foreach (string s in args)
             {
@@ -57,6 +56,18 @@ namespace BasicServerHTTPlistener
                 HttpListenerContext context = listener.GetContext();
                 HttpListenerRequest request = context.Request;
 
+                var h = request.Headers.AllKeys!
+                    .Select(k => Enum.TryParse(k!.Replace("-", ""), out HttpRequestHeader header)
+                        ? new {header, Value = request.Headers[k]}
+                        : null)
+                    .Where(x => x != null)
+                    .ToDictionary(x => x.header, x => x.Value);
+                
+                foreach(var (key, value) in h)
+                {
+                    Console.WriteLine($"{key} : {value}");
+                }
+
                 string documentContents;
                 using (Stream receiveStream = request.InputStream)
                 {
@@ -65,7 +76,7 @@ namespace BasicServerHTTPlistener
                         documentContents = readStream.ReadToEnd();
                     }
                 }
-                
+
                 Console.WriteLine($"Received request for {request.Url}");
                 Console.WriteLine(documentContents);
 

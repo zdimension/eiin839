@@ -55,6 +55,7 @@
       <option name="presentableId" value="Default" />
       <updated>1644322885802</updated>
       <workItem from="1644322893267" duration="1217000" />
+      <workItem from="1644325453703" duration="1023000" />
     </task>
     <servers />
   </component>
@@ -62,7 +63,7 @@
     <option name="version" value="3" />
   </component>
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
@@ -72,13 +73,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/BasicServerHttpListener/Program.cs</url>
-          <line>57</line>
+          <line>56</line>
           <properties documentPath="C:\Users\Tom\Documents\GitHub\eiin839\TD1\HttpListener\BasicServerHttpListener\Program.cs" initialLine="57" containingFunctionPresentation="method 'Main'">
             <startOffsets>
-              <option value="1897" />
+              <option value="1902" />
             </startOffsets>
             <endOffsets>
-              <option value="1943" />
+              <option value="1948" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="2" />

@@ -90,6 +90,11 @@ public class HandleClient
             {
                 var filePath = Path.Combine(RootPath, url);
 
+                if (Directory.Exists(filePath))
+                {
+                    filePath += "/index.html";
+                }
+                
                 if (!File.Exists(filePath))
                 {
                     Response(stream, 404, "Page not found");
