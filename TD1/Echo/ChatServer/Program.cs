@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,7 +42,12 @@ public class HandleClient
 
     private static readonly string RootPath = Path.GetFullPath(Environment.GetEnvironmentVariable("HTTP_ROOT") ?? "root");
 
-    private static async void Response(Stream output, int code, string content)
+    private static MemoryStream MakeRaw(string message)
+    {
+        return new MemoryStream(Encoding.UTF8.GetBytes(message));
+    }
+    
+    private static async void Response(Stream output, int code, Stream content)
     {
         await using var sw = new StreamWriter(output);
 
@@ -53,7 +59,9 @@ public class HandleClient
 
         await sw.WriteLineAsync();
 
-        await sw.WriteLineAsync(content);
+        await sw.FlushAsync();
+
+        await content.CopyToAsync(output);
     }
 
     private async void Echo()
@@ -66,7 +74,7 @@ public class HandleClient
         }
         catch (Exception e)
         {
-            Response(stream, 500, e.Message);
+            Response(stream, 500, MakeRaw(e.Message));
         }
     }
 
@@ -97,19 +105,18 @@ public class HandleClient
                 
                 if (!File.Exists(filePath))
                 {
-                    Response(stream, 404, "Page not found");
+                    Response(stream, 404, MakeRaw("Page not found"));
                     return;
                 }
 
                 await using var fs = File.OpenRead(filePath);
-                var content = await new StreamReader(fs).ReadToEndAsync();
-                Response(stream, 200, content);
+                Response(stream, 200, fs);
 
                 break;
             }
             default:
             {
-                Response(stream, 405, "Method not allowed");
+                Response(stream, 405, MakeRaw("Method not allowed"));
                 break;
             }
         }

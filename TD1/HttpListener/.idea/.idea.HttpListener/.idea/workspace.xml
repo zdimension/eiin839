@@ -10,6 +10,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/0a3ce4a0d5ea4838a51ebc5f6b2ebf57e868/b1/0982fd14/HttpResponseHeader.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -55,7 +58,7 @@
       <option name="presentableId" value="Default" />
       <updated>1644322885802</updated>
       <workItem from="1644322893267" duration="1217000" />
-      <workItem from="1644325453703" duration="1023000" />
+      <workItem from="1644325453703" duration="2418000" />
     </task>
     <servers />
   </component>
@@ -67,24 +70,5 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/BasicServerHttpListener/Program.cs</url>
-          <line>56</line>
-          <properties documentPath="C:\Users\Tom\Documents\GitHub\eiin839\TD1\HttpListener\BasicServerHttpListener\Program.cs" initialLine="57" containingFunctionPresentation="method 'Main'">
-            <startOffsets>
-              <option value="1902" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1948" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
