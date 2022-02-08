@@ -15,7 +15,7 @@ internal static class EchoServer
         Console.CancelKeyPress += delegate { Environment.Exit(0); };
 
         const int port = 5000;
-            
+
         var serverSocket = new TcpListener(IPAddress.Loopback, port);
         serverSocket.Start();
 
@@ -40,13 +40,14 @@ public class HandleClient
         ctThread.Start();
     }
 
-    private static readonly string RootPath = Path.GetFullPath(Environment.GetEnvironmentVariable("HTTP_ROOT") ?? "root");
+    private static readonly string RootPath =
+        Path.GetFullPath(Environment.GetEnvironmentVariable("HTTP_ROOT") ?? "root");
 
     private static MemoryStream MakeRaw(string message)
     {
         return new MemoryStream(Encoding.UTF8.GetBytes(message));
     }
-    
+
     private static async void Response(Stream output, int code, Stream content)
     {
         await using var sw = new StreamWriter(output);
@@ -56,6 +57,7 @@ public class HandleClient
         await sw.WriteLineAsync("Content-Type: text/html");
         await sw.WriteLineAsync($"Content-Length: {content.Length}");
         await sw.WriteLineAsync("Content-Encoding: UTF-8");
+        await sw.WriteLineAsync("Connection: close");
 
         await sw.WriteLineAsync();
 
@@ -67,7 +69,7 @@ public class HandleClient
     private async void Echo()
     {
         var stream = _clientSocket.GetStream();
-
+        
         try
         {
             await HandleRequest(stream);
@@ -102,7 +104,7 @@ public class HandleClient
                 {
                     filePath += "/index.html";
                 }
-                
+
                 if (!File.Exists(filePath))
                 {
                     Response(stream, 404, MakeRaw("Page not found"));
