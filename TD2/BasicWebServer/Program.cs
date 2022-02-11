@@ -83,19 +83,22 @@ internal class Program
             }
 
             //get url protocol
-            Console.WriteLine(request.Url!.Scheme);
+            Console.WriteLine("Scheme " + request.Url!.Scheme);
             //get user in url
-            Console.WriteLine(request.Url.UserInfo);
+            Console.WriteLine("UserInfo " + request.Url.UserInfo);
             //get host in url
-            Console.WriteLine(request.Url.Host);
+            Console.WriteLine("Host" + request.Url.Host);
             //get port in url
-            Console.WriteLine(request.Url.Port);
+            Console.WriteLine("Port " + request.Url.Port);
             //get path in url 
-            Console.WriteLine(request.Url.LocalPath);
+            Console.WriteLine("LocalPath " + request.Url.LocalPath);
 
             // parse path in url 
+            Console.WriteLine("Segments :");
             foreach (var str in request.Url.Segments)
                 Console.WriteLine(str);
+            
+            Console.WriteLine("Query " + request.Url.Query);
         }
         // Httplistener neither stop ... But Ctrl-C do that ...
         // listener.Stop();
