@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TP Web Front</title>
+
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<div>
+    <label for="apiKey">Clé API :</label>
+    <input name="apiKeyInput" id="apiKey">
+</div>
+
+<div>
+    <button id="retrieveContractsButton" onclick="retrieveAllContracts();">Récupérer contrats</button>
+</div>
+
+<div>
+    <label for="chosenContract">Contrat :</label>
+    <input list="contractsList" name="contractInput" id="chosenContract">
+    <datalist id="contractsList"></datalist>
+    <button onclick="retrieveContractStations();">Récupérer stations</button>
+</div>
+
+<div>
+    <label for="latitude">Latitude :</label>
+    <input name="latitude" id="latitude">
+
+    <label for="longitude">Longitude :</label>
+    <input name="longitude" id="longitude">
+    <button onclick="getClosestStation();">Station la plus proche</button>
+</div>
+
+<div>
+    <h2>Station la plus proche : <span id="closestStation"></span></h2>
+</div>
+
+<script type="text/javascript" src="main.js"></script>
+</body>
+</html>
