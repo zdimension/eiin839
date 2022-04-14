@@ -22,7 +22,7 @@ namespace RoutingService
         /// <param name="args">The parameters to the endpoint, as a dictionary.</param>
         /// <param name="cached">Whether to cache the request or not.</param>
         /// <returns>A task yielding the response as a raw string.</returns>
-        public static async Task<string> GetAsync(string endpoint, IDictionary<string, object>? args = null)
+        public static async Task<string> GetAsync(string endpoint, Dictionary<string, object>? args = null)
         {
             var url = string.Format(_apiRoot.Value, endpoint);
 
@@ -41,18 +41,6 @@ namespace RoutingService
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             return content;
-        }
-
-        /// <summary>
-        /// Sends a GET request to the specified endpoint asynchronously.
-        /// </summary>
-        /// <param name="endpoint">An API endpoint.</param>
-        /// <param name="args">The parameters to the endpoint, as an anonymous type.</param>
-        /// <param name="cached">Whether to cache the request or not.</param>
-        /// <returns>A task yielding the response as a raw string.</returns>
-        public static async Task<string> GetAsync<T>(string endpoint, T args)
-        {
-            return await GetAsync(endpoint, (IDictionary<string, object>)new RouteValueDictionary(args));
         }
     }
 }

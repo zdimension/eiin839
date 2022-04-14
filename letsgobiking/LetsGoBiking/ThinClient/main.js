@@ -63,19 +63,23 @@ $(async function () {
     }
 
     const stations = await apiGet("GetStations");
-
-    map.addLayer(new ol.layer.Vector({
-        source: new ol.source.Vector({
-            features: stations.map(station => {
-                return new ol.Feature({
-                    geometry: new ol.geom.Point(ol.proj.fromLonLat([station.position.longitude, station.position.latitude])),
-                    name: station.name
-                });
-            }),
+    const stationsSource = new ol.source.Vector({
+        features: stations.map(station => {
+            return new ol.Feature({
+                geometry: new ol.geom.Point(ol.proj.fromLonLat([station.position.longitude, station.position.latitude])),
+                name: station.name
+            });
         }),
+    });
+    map.addLayer(new ol.layer.Vector({
+        source: stationsSource,
         style: bikestyle,
         zIndex: 10
     }));
+    map.getView().fit(stationsSource.getExtent(), {
+        size: map.getSize(),
+        padding: [50, 50, 50, 50]
+    });
 
     let requested = false;
     let loading = false;
@@ -120,6 +124,7 @@ $(async function () {
 
     let computing = false;
     let routeLayer = null;
+
     async function updateRoute() {
         if (computing) return;
         if (!acStart.value || !acEnd.value) {
@@ -144,7 +149,6 @@ $(async function () {
             style: [lineStyle]
         });
         map.addLayer(routeLayer);
-        // center map on the two points
         map.getView().fit(vectorSource.getExtent(), {
             size: map.getSize(),
             padding: [50, 50, 50, 50]

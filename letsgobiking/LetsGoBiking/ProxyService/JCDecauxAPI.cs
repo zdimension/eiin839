@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
+using static Shared.Logging;
 
 namespace ProxyService
 {
@@ -23,6 +24,7 @@ namespace ProxyService
         /// <returns>A task yielding the response as a raw string.</returns>
         private static async Task<string> GetAsyncFresh(string url)
         {
+            Log($"Fetching {url}");
             var response = await _client.GetAsync(url);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
@@ -36,7 +38,7 @@ namespace ProxyService
         /// <param name="args">The parameters to the endpoint, as a dictionary.</param>
         /// <param name="cached">Whether to cache the request or not.</param>
         /// <returns>A task yielding the response as a raw string.</returns>
-        public static async Task<string> GetAsync(string endpoint, IDictionary<string, object>? args = null, bool cached = true)
+        public static async Task<string> GetAsync(string endpoint, Dictionary<string, object>? args = null, bool cached = true)
         {
             var url = string.Format(_apiRoot.Value, endpoint);
             
@@ -52,18 +54,6 @@ namespace ProxyService
             }
 
             return await (cached ? _cache.Get(url) : GetAsyncFresh(url));
-        }
-
-        /// <summary>
-        /// Sends a GET request to the specified endpoint asynchronously.
-        /// </summary>
-        /// <param name="endpoint">An API endpoint.</param>
-        /// <param name="args">The parameters to the endpoint, as an anonymous type.</param>
-        /// <param name="cached">Whether to cache the request or not.</param>
-        /// <returns>A task yielding the response as a raw string.</returns>
-        public static async Task<string> GetAsync<T>(string endpoint, T args, bool cached = true)
-        {
-            return await GetAsync(endpoint, (IDictionary<string, object>)new RouteValueDictionary(args), cached);
         }
     }
 }

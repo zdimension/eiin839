@@ -1,19 +1,22 @@
 ﻿using System.Threading.Tasks;
+using static Shared.Logging;
 
 namespace ProxyService
 {
     public class ProxyService : IProxyService
     {
-        private static readonly string _apiCity = "lyon";
+        private static readonly string _apiCity = "marseille";
 
         public async Task<string> GetStationsAsync()
         {
-            return await JCDecauxAPI.GetAsync("stations", new { contract = _apiCity }, false);
+            Log("");
+            return await JCDecauxAPI.GetAsync("stations", new() { ["contract"] = _apiCity }, false);
         }
 
         public async Task<string> GetStationAsync(string id)
         {
-            return await JCDecauxAPI.GetAsync("stations/" + id, new { contract = _apiCity });
+            Log(id);
+            return await JCDecauxAPI.GetAsync("stations/" + id, new() { ["contract"] = _apiCity });
         }
     }
 }
