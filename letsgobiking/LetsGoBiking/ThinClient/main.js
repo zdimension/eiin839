@@ -107,6 +107,9 @@ $(async function () {
         }
         requested = false;
         setTimeout(() => {
+            if (ac.field.value !== value) {
+                requested = true;
+            }
             if (requested) {
                 setacdata(ac);
             } else {
@@ -116,6 +119,7 @@ $(async function () {
     }
 
     let computing = false;
+    let routeLayer = null;
     async function updateRoute() {
         if (computing) return;
         if (!acStart.value || !acEnd.value) {
@@ -134,11 +138,17 @@ $(async function () {
                 featureProjection: 'EPSG:3857',
             })).flat(),
         });
-        const vectorLayer = new ol.layer.Vector({
+        map.removeLayer(routeLayer);
+        routeLayer = new ol.layer.Vector({
             source: vectorSource,
             style: [lineStyle]
         });
-        map.addLayer(vectorLayer);
+        map.addLayer(routeLayer);
+        // center map on the two points
+        map.getView().fit(vectorSource.getExtent(), {
+            size: map.getSize(),
+            padding: [50, 50, 50, 50]
+        });
         computing = false;
     }
 
