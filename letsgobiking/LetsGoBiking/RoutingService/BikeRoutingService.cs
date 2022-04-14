@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ServiceModel.Description;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RoutingService.ProxyService;
@@ -16,6 +17,9 @@ namespace RoutingService
 
         public BikeRoutingService()
         {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
             _stations = new(async () =>
             {
                 var json = await _proxyService.GetStationsAsync();
@@ -33,13 +37,77 @@ namespace RoutingService
             return JsonConvert.DeserializeObject<JCDecauxStation>(await _proxyService.GetStationAsync(id));
         }
 
-        public async Task<string> GetRoute(string start, string end)
+        private async Task<JCDecauxStation> ClosestAvailable(JCDecauxPosition pos)
         {
-            return await OpenRouteAPI.GetAsync("directions/cycling-regular", new
+            var stations = await _stations.Value;
+            foreach (var s1 in stations.OrderBy(s => s.position.Distance(pos)))
             {
-                start,
-                end
+                if ((await GetStationAsync(s1.number.ToString())).totalStands.availabilities.bikes > 0) 
+                    return s1;
+            }
+
+            return null;
+        }
+
+        private async Task<string> GetRouteFull(string type, JCDecauxPosition start, JCDecauxPosition end)
+        {
+            return await OpenRouteAPI.GetAsync($"v2/directions/{type}", new
+            {
+                start = $"{start.longitude},{start.latitude}",
+                end = $"{end.longitude},{end.latitude}"
             });
+        }
+
+        private async Task<string> GetRouteWalking(JCDecauxPosition start, JCDecauxPosition end)
+        {
+            return await GetRouteFull("foot-walking", start, end);
+        }
+
+        public async Task<string[]> GetRoute(RouteParameters points)
+        {
+            var closestStart = await ClosestAvailable(points.start);
+
+            if (closestStart == null)
+            {
+                // no available stations
+                return new[] { await GetRouteWalking(points.start, points.end) };
+            }
+
+            var closestEnd = await ClosestAvailable(points.end);
+
+            if (closestEnd == closestStart)
+            {
+                // only one available station
+                return new[] { await GetRouteWalking(points.start, points.end) };
+            }
+
+            var routes = new[]
+            {
+                GetRouteWalking(points.start, closestStart.position),
+                GetRouteFull("cycling-regular", closestStart.position, closestEnd.position),
+                GetRouteWalking(closestEnd.position, points.end)
+            };
+            await Task.WhenAll(routes);
+            return routes.Select(t => t.Result).ToArray();
+        }
+
+        public void CorsHack()
+        {
+        }
+
+        public async Task<string> Geocode(GeocodeParameters geo)
+        {
+            return await OpenRouteAPI.GetAsync("geocode/autocomplete", (IDictionary<string, object>)new Dictionary<string, object>
+            {
+                ["text"] = geo.query,
+                ["focus.point.lon"] = geo.focus.longitude,
+                ["focus.point.lat"] = geo.focus.latitude,
+                ["sources"] = "openstreetmap"
+            });
+        }
+
+        public void CorsHack2()
+        {
         }
     }
 }

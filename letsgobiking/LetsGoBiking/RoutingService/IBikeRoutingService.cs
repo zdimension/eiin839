@@ -25,10 +25,43 @@ namespace RoutingService
         Task<JCDecauxStation> GetStationAsync(string id);
 
         [OperationContract]
-        [WebInvoke(Method = "GET",
+        [WebInvoke(Method = "POST",
+            RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
-            UriTemplate = "GetRoute/{start}/{end}")]
-        Task<string> GetRoute(string start, string end);
+            UriTemplate = "GetRoute")]
+        Task<string[]> GetRoute(RouteParameters points);
+
+        [OperationContract]
+        [WebInvoke(Method = "OPTIONS",
+            UriTemplate = "GetRoute")]
+        void CorsHack();
+
+        [OperationContract]
+        [WebInvoke(Method = "POST",
+            RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Bare,
+            UriTemplate = "Geocode")]
+        Task<string> Geocode(GeocodeParameters geo);
+
+        [OperationContract]
+        [WebInvoke(Method = "OPTIONS",
+            UriTemplate = "Geocode")]
+        void CorsHack2();
+    }
+
+    [DataContract]
+    public class RouteParameters
+    {
+        [DataMember] public JCDecauxPosition start { get; set; }
+        [DataMember] public JCDecauxPosition end { get; set; }
+    }
+
+    [DataContract]
+    public class GeocodeParameters
+    {
+        [DataMember] public string query { get; set; }
+        [DataMember] public JCDecauxPosition focus { get; set; }
     }
 }

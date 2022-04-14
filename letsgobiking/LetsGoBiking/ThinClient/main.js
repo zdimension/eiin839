@@ -1,5 +1,22 @@
+function getDistanceFrom2GpsCoordinates(lat1, lon1, lat2, lon2) {
+    const earthRadius = 6371;
+    const dLat = deg2rad(lat2 - lat1);
+    const dLon = deg2rad(lon2 - lon1);
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    ;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return earthRadius * c;
+}
+
+function deg2rad(deg) {
+    return deg * Math.PI / 180;
+}
+
 $(async function () {
-    var map = new ol.Map({
+    const map = new ol.Map({
         target: 'map', // <-- This is the id of the div in which the map will be built.
         layers: [
             new ol.layer.Tile({
@@ -14,30 +31,142 @@ $(async function () {
 
     });
 
-    var lineStyle = new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: '#ffcc33',
-            width: 100
+    const bikestyle = new ol.style.Style({
+        image: new ol.style.Icon({
+            anchor: [0.5, 1],
+            scale: [0.08, 0.08],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            src: 'marker.png'
         })
     });
 
-    async function api(endpoint) {
-        return JSON.parse(await (await fetch($("#apiUrl").val() + "rest/" + endpoint)).json());
+    const lineStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#ffcc33',
+            width: 10
+        })
+    });
+
+    async function apiGet(endpoint) {
+        return await (await fetch($("#apiUrl").val() + "rest/" + endpoint)).json();
     }
 
-    async function computeRoute() {
-        const geojson = await api("GetRoute/7.0985774,43.6365619/8.687872,49.420318");
+    async function apiPost(endpoint, body) {
+        return await (await fetch($("#apiUrl").val() + "rest/" + endpoint, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })).json();
+    }
+
+    const stations = await apiGet("GetStations");
+
+    map.addLayer(new ol.layer.Vector({
+        source: new ol.source.Vector({
+            features: stations.map(station => {
+                return new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat([station.position.longitude, station.position.latitude])),
+                    name: station.name
+                });
+            }),
+        }),
+        style: bikestyle,
+        zIndex: 10
+    }));
+
+    let requested = false;
+    let loading = false;
+
+    async function setacdata(ac) {
+        if (loading) {
+            return;
+        }
+        const value = ac.field.value;
+        if (!value) {
+            ac.setData([]);
+        } else {
+            loading = true;
+            const [longitude, latitude] = ol.proj.toLonLat(map.getView().getCenter());
+            const geocode = JSON.parse(await apiPost("Geocode", {
+                query: value,
+                focus: {
+                    longitude,
+                    latitude
+                }
+            }));
+            ac.setData(geocode.features.map(f => {
+                return {
+                    label: f.properties.label,
+                    value: JSON.stringify(f.geometry.coordinates)
+                };
+            }));
+            loading = false;
+        }
+        requested = false;
+        setTimeout(() => {
+            if (requested) {
+                setacdata(ac);
+            } else {
+                requested = false;
+            }
+        }, 200);
+    }
+
+    let computing = false;
+    async function updateRoute() {
+        if (computing) return;
+        if (!acStart.value || !acEnd.value) {
+            return;
+        }
+        computing = true;
+        const [startLon, startLat] = acStart.value;
+        const [endLon, endLat] = acEnd.value;
+
+        const start = {"longitude": startLon, "latitude": startLat};
+        const end = {"longitude": endLon, "latitude": endLat};
+        const geojson = await apiPost("GetRoute", {start, end});
         const vectorSource = new ol.source.Vector({
-            features: new ol.format.GeoJSON().readFeatures(geojson),
+            features: geojson.map(o => new ol.format.GeoJSON().readFeatures(JSON.parse(o), {
+                dataProjection: 'EPSG:4326',
+                featureProjection: 'EPSG:3857',
+            })).flat(),
         });
-        vectorSource.transform('EPSG:4326', 'EPSG:3857');
-        vectorSource.addFeature(new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)));
         const vectorLayer = new ol.layer.Vector({
             source: vectorSource,
             style: [lineStyle]
         });
         map.addLayer(vectorLayer);
+        computing = false;
     }
 
-    await computeRoute();
+    const acStart = new Autocomplete(document.getElementById("posStart"), {
+        onSelectItem: () => {
+            updateRoute();
+        },
+        onInput: () => {
+            if (!requested) {
+                requested = true;
+                setacdata(acStart);
+            } else {
+                requested = true;
+            }
+        }
+    });
+
+    const acEnd = new Autocomplete(document.getElementById("posEnd"), {
+        onSelectItem: () => {
+            updateRoute();
+        },
+        onInput: () => {
+            if (!requested) {
+                requested = true;
+                setacdata(acEnd);
+            } else {
+                requested = true;
+            }
+        }
+    });
 });

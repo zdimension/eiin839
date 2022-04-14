@@ -8,28 +8,33 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System;
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.Threading.Tasks;
+
 namespace HeavyClient.RoutingService {
-    using System.Runtime.Serialization;
-    using System;
-    
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CompositeType", Namespace="http://schemas.datacontract.org/2004/07/RoutingService")]
-    [System.SerializableAttribute()]
-    public partial class CompositeType : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.Runtime.Serialization", "4.0.0.0")]
+    [DataContract(Name="CompositeType", Namespace="http://schemas.datacontract.org/2004/07/RoutingService")]
+    [Serializable()]
+    public partial class CompositeType : object, IExtensibleDataObject, INotifyPropertyChanged {
         
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        [NonSerialized()]
+        private ExtensionDataObject extensionDataField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private bool BoolValueField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        [OptionalField()]
         private string StringValueField;
         
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+        [Browsable(false)]
+        public ExtensionDataObject ExtensionData {
             get {
                 return this.extensionDataField;
             }
@@ -38,7 +43,7 @@ namespace HeavyClient.RoutingService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public bool BoolValue {
             get {
                 return this.BoolValueField;
@@ -51,53 +56,53 @@ namespace HeavyClient.RoutingService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [DataMember()]
         public string StringValue {
             get {
                 return this.StringValueField;
             }
             set {
-                if ((object.ReferenceEquals(this.StringValueField, value) != true)) {
+                if ((ReferenceEquals(this.StringValueField, value) != true)) {
                     this.StringValueField = value;
                     this.RaisePropertyChanged("StringValue");
                 }
             }
         }
         
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                propertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="RoutingService.IRoutingService")]
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    [ServiceContract(ConfigurationName="RoutingService.IRoutingService")]
     public interface IRoutingService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRoutingService/GetData", ReplyAction="http://tempuri.org/IRoutingService/GetDataResponse")]
+        [OperationContract(Action="http://tempuri.org/IRoutingService/GetData", ReplyAction="http://tempuri.org/IRoutingService/GetDataResponse")]
         string GetData(int value);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRoutingService/GetData", ReplyAction="http://tempuri.org/IRoutingService/GetDataResponse")]
-        System.Threading.Tasks.Task<string> GetDataAsync(int value);
+        [OperationContract(Action="http://tempuri.org/IRoutingService/GetData", ReplyAction="http://tempuri.org/IRoutingService/GetDataResponse")]
+        Task<string> GetDataAsync(int value);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRoutingService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IRoutingService/GetDataUsingDataContractResponse")]
-        HeavyClient.RoutingService.CompositeType GetDataUsingDataContract(HeavyClient.RoutingService.CompositeType composite);
+        [OperationContract(Action="http://tempuri.org/IRoutingService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IRoutingService/GetDataUsingDataContractResponse")]
+        CompositeType GetDataUsingDataContract(CompositeType composite);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRoutingService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IRoutingService/GetDataUsingDataContractResponse")]
-        System.Threading.Tasks.Task<HeavyClient.RoutingService.CompositeType> GetDataUsingDataContractAsync(HeavyClient.RoutingService.CompositeType composite);
+        [OperationContract(Action="http://tempuri.org/IRoutingService/GetDataUsingDataContract", ReplyAction="http://tempuri.org/IRoutingService/GetDataUsingDataContractResponse")]
+        Task<CompositeType> GetDataUsingDataContractAsync(CompositeType composite);
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IRoutingServiceChannel : HeavyClient.RoutingService.IRoutingService, System.ServiceModel.IClientChannel {
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    public interface IRoutingServiceChannel : IRoutingService, IClientChannel {
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class RoutingServiceClient : System.ServiceModel.ClientBase<HeavyClient.RoutingService.IRoutingService>, HeavyClient.RoutingService.IRoutingService {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    public partial class RoutingServiceClient : ClientBase<IRoutingService>, IRoutingService {
         
         public RoutingServiceClient() {
         }
@@ -110,11 +115,11 @@ namespace HeavyClient.RoutingService {
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public RoutingServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public RoutingServiceClient(string endpointConfigurationName, EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public RoutingServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public RoutingServiceClient(Binding binding, EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
@@ -122,15 +127,15 @@ namespace HeavyClient.RoutingService {
             return base.Channel.GetData(value);
         }
         
-        public System.Threading.Tasks.Task<string> GetDataAsync(int value) {
+        public Task<string> GetDataAsync(int value) {
             return base.Channel.GetDataAsync(value);
         }
         
-        public HeavyClient.RoutingService.CompositeType GetDataUsingDataContract(HeavyClient.RoutingService.CompositeType composite) {
+        public CompositeType GetDataUsingDataContract(CompositeType composite) {
             return base.Channel.GetDataUsingDataContract(composite);
         }
         
-        public System.Threading.Tasks.Task<HeavyClient.RoutingService.CompositeType> GetDataUsingDataContractAsync(HeavyClient.RoutingService.CompositeType composite) {
+        public Task<CompositeType> GetDataUsingDataContractAsync(CompositeType composite) {
             return base.Channel.GetDataUsingDataContractAsync(composite);
         }
     }

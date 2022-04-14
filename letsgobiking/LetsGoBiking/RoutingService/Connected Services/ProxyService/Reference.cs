@@ -8,33 +8,39 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.Diagnostics;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.Threading.Tasks;
+
 namespace RoutingService.ProxyService {
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ProxyService.IProxyService")]
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    [ServiceContract(ConfigurationName="ProxyService.IProxyService")]
     public interface IProxyService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxyService/GetStations", ReplyAction="http://tempuri.org/IProxyService/GetStationsResponse")]
+        [OperationContract(Action="http://tempuri.org/IProxyService/GetStations", ReplyAction="http://tempuri.org/IProxyService/GetStationsResponse")]
         string GetStations();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxyService/GetStations", ReplyAction="http://tempuri.org/IProxyService/GetStationsResponse")]
-        System.Threading.Tasks.Task<string> GetStationsAsync();
+        [OperationContract(Action="http://tempuri.org/IProxyService/GetStations", ReplyAction="http://tempuri.org/IProxyService/GetStationsResponse")]
+        Task<string> GetStationsAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxyService/GetStation", ReplyAction="http://tempuri.org/IProxyService/GetStationResponse")]
+        [OperationContract(Action="http://tempuri.org/IProxyService/GetStation", ReplyAction="http://tempuri.org/IProxyService/GetStationResponse")]
         string GetStation(string id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProxyService/GetStation", ReplyAction="http://tempuri.org/IProxyService/GetStationResponse")]
-        System.Threading.Tasks.Task<string> GetStationAsync(string id);
+        [OperationContract(Action="http://tempuri.org/IProxyService/GetStation", ReplyAction="http://tempuri.org/IProxyService/GetStationResponse")]
+        Task<string> GetStationAsync(string id);
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IProxyServiceChannel : RoutingService.ProxyService.IProxyService, System.ServiceModel.IClientChannel {
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    public interface IProxyServiceChannel : IProxyService, IClientChannel {
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ProxyServiceClient : System.ServiceModel.ClientBase<RoutingService.ProxyService.IProxyService>, RoutingService.ProxyService.IProxyService {
+    [DebuggerStepThrough()]
+    [GeneratedCode("System.ServiceModel", "4.0.0.0")]
+    public partial class ProxyServiceClient : ClientBase<IProxyService>, IProxyService {
         
         public ProxyServiceClient() {
         }
@@ -47,11 +53,11 @@ namespace RoutingService.ProxyService {
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public ProxyServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public ProxyServiceClient(string endpointConfigurationName, EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public ProxyServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public ProxyServiceClient(Binding binding, EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
@@ -59,7 +65,7 @@ namespace RoutingService.ProxyService {
             return base.Channel.GetStations();
         }
         
-        public System.Threading.Tasks.Task<string> GetStationsAsync() {
+        public Task<string> GetStationsAsync() {
             return base.Channel.GetStationsAsync();
         }
         
@@ -67,7 +73,7 @@ namespace RoutingService.ProxyService {
             return base.Channel.GetStation(id);
         }
         
-        public System.Threading.Tasks.Task<string> GetStationAsync(string id) {
+        public Task<string> GetStationAsync(string id) {
             return base.Channel.GetStationAsync(id);
         }
     }

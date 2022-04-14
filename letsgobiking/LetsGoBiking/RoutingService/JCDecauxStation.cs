@@ -6,16 +6,29 @@ namespace RoutingService
     [DataContract]
     public class JCDecauxStation
     {
-        [DataMember] public int Number { get; set; }
-        [DataMember] public string ContractName { get; set; }
-        [DataMember] public string Name { get; set; }
-        [DataMember] public string Address { get; set; }
-        [DataMember] public JCDecauxPosition Position { get; set; }
-        [DataMember] public bool Banking { get; set; }
-        [DataMember] public bool Bonus { get; set; }
-        [DataMember] public string Status { get; set; }
-        [DataMember] public DateTime LastUpdate { get; set; }
-        [DataMember] public bool Connected { get; set; }
-        [DataMember] public bool Overflow { get; set; }
+        [DataMember] public int number { get; set; }
+        [DataMember] public string contractName { get; set; }
+        [DataMember] public string name { get; set; }
+        [DataMember] public string address { get; set; }
+        [DataMember] public JCDecauxPosition position { get; set; }
+        [DataMember] public bool banking { get; set; }
+        [DataMember] public bool bonus { get; set; }
+        [DataMember] public string status { get; set; }
+        [DataMember] public DateTime lastUpdate { get; set; }
+        [DataMember] public bool connected { get; set; }
+        [DataMember] public JCDecauxStandInfo totalStands { get; set; }
+    }
+
+    [DataContract]
+    public class JCDecauxStandInfo
+    {
+        [DataMember] public JCDecauxStandAvailability availabilities { get; set; }
+        [DataMember] public int capacity { get; set; }
+    }
+
+    [DataContract]
+    public class JCDecauxStandAvailability
+    {
+        [DataMember] public int bikes { get; set; }
     }
 }

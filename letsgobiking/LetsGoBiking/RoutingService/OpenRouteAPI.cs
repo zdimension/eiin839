@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
@@ -15,7 +13,7 @@ namespace RoutingService
         private static readonly Lazy<string> _apiToken = new(() => Environment.GetEnvironmentVariable("OPENROUTE_API_KEY")
                                                    ?? throw new Exception("Missing API token (env var OPENROUTE_API_KEY)"));
 
-        private static readonly Lazy<string> _apiRoot = new(() => $"https://api.openrouteservice.org/v2/{{0}}?api_key={_apiToken.Value}&");
+        private static readonly Lazy<string> _apiRoot = new(() => $"https://api.openrouteservice.org/{{0}}?api_key={_apiToken.Value}&");
 
         /// <summary>
         /// Sends a GET request to the specified endpoint asynchronously.
