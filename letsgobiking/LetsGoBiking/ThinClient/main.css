@@ -1,0 +1,7 @@
+#map {
+    height: 70vh;
+}
+
+.container > * {
+    margin: 15pt 0;
+}

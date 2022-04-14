@@ -1,33 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
 
-namespace ProxyService
+namespace RoutingService
 {
-    internal class JCDecauxAPI
+    internal class OpenRouteAPI
     {
         private static readonly HttpClient _client = new();
-        private static readonly Lazy<string> _apiToken = new(() => Environment.GetEnvironmentVariable("JCDECAUX_API_KEY") 
-                                                   ?? throw new Exception("Missing API token (env var JCDECAUX_API_KEY)"));
+        private static readonly Lazy<string> _apiToken = new(() => Environment.GetEnvironmentVariable("OPENROUTE_API_KEY")
+                                                   ?? throw new Exception("Missing API token (env var OPENROUTE_API_KEY)"));
 
-        private static readonly Lazy<string> _apiRoot = new(() => $"https://api.jcdecaux.com/vls/v3/{{0}}?apiKey={_apiToken.Value}&");
-        private static readonly ProxyCache<string> _cache = new(GetAsyncFresh);
-
-        /// <summary>
-        /// Sends a GET request to the specified URL asynchronously.
-        /// </summary>
-        /// <param name="url">A URL.</param>
-        /// <returns>A task yielding the response as a raw string.</returns>
-        private static async Task<string> GetAsyncFresh(string url)
-        {
-            var response = await _client.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            return content;
-        }
+        private static readonly Lazy<string> _apiRoot = new(() => $"https://api.openrouteservice.org/v2/{{0}}?api_key={_apiToken.Value}&");
 
         /// <summary>
         /// Sends a GET request to the specified endpoint asynchronously.
@@ -36,10 +24,10 @@ namespace ProxyService
         /// <param name="args">The parameters to the endpoint, as a dictionary.</param>
         /// <param name="cached">Whether to cache the request or not.</param>
         /// <returns>A task yielding the response as a raw string.</returns>
-        public static async Task<string> GetAsync(string endpoint, IDictionary<string, object>? args = null, bool cached = true)
+        public static async Task<string> GetAsync(string endpoint, IDictionary<string, object>? args = null)
         {
             var url = string.Format(_apiRoot.Value, endpoint);
-            
+
             if (args != null)
             {
                 var query = HttpUtility.ParseQueryString("");
@@ -51,7 +39,10 @@ namespace ProxyService
                 url += query.ToString();
             }
 
-            return await (cached ? _cache.Get(url) : GetAsyncFresh(url));
+            var response = await _client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return content;
         }
 
         /// <summary>
@@ -61,9 +52,9 @@ namespace ProxyService
         /// <param name="args">The parameters to the endpoint, as an anonymous type.</param>
         /// <param name="cached">Whether to cache the request or not.</param>
         /// <returns>A task yielding the response as a raw string.</returns>
-        public static async Task<string> GetAsync<T>(string endpoint, T args, bool cached = true)
+        public static async Task<string> GetAsync<T>(string endpoint, T args)
         {
-            return await GetAsync(endpoint, (IDictionary<string, object>)new RouteValueDictionary(args), cached);
+            return await GetAsync(endpoint, (IDictionary<string, object>)new RouteValueDictionary(args));
         }
     }
 }

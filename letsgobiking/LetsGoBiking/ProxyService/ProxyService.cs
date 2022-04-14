@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Web.Routing;
 
 namespace ProxyService
 {
@@ -8,12 +9,12 @@ namespace ProxyService
 
         public async Task<string> GetStationsAsync()
         {
-            return await JCDecauxAPI.GetAsync("stations", new() { ["contract"] = _apiCity });
+            return await JCDecauxAPI.GetAsync("stations", new { contract = _apiCity }, false);
         }
 
         public async Task<string> GetStationAsync(string id)
         {
-            return await JCDecauxAPI.GetAsync("stations/" + id, new() { ["contract"] = _apiCity });
+            return await JCDecauxAPI.GetAsync("stations/" + id, new { contract = _apiCity });
         }
     }
 }
