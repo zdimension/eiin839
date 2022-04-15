@@ -159,9 +159,11 @@ $(async function () {
             });
             group.getLayers().push(layer);
         }
+        steplist.empty();
         for (let step of steps) {
             steplist.append($("<li>").addClass("list-group-item").text(step.instruction))
         }
+        $("#routeInfo").show();
         map.removeLayer(routeLayer);
         map.addLayer(routeLayer = group);
         map.getView().fit(new ol.source.Vector({features}).getExtent(), {
