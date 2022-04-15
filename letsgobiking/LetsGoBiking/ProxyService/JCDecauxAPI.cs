@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
-using static Shared.Logging;
+using static Shared.Utilities;
 
 namespace ProxyService
 {

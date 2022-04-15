@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using static Shared.Logging;
+using static Shared.Utilities;
 
 namespace ProxyService
 {
