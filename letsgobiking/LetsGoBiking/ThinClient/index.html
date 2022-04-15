@@ -18,37 +18,59 @@
         <div class="px-4 py-2 text-center">
             <h1 class="display-5 fw-bold">Let's go biking</h1>
         </div>
-        <div class="card">
-            <div class="card-header">
-                Paramètres
-            </div>
-            <div class="card-body">
-                <div class="row g-3 align-items-center">
-                    <div class="col-auto">
-                        <label for="apiUrl">URL de l'API :</label>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        Paramètres
                     </div>
-                    <div class="col-auto flex-grow-1">
-                        <input name="apiKeyInput" id="apiUrl" class="form-control"
-                               value="http://localhost:8733/Design_Time_Addresses/RoutingService/BikeRoutingService/">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-6">
-                        <input type="text" class="form-control" id="posStart"/>
-                    </div>
-                    <div class="col-6">
-                        <input type="text" class="form-control" id="posEnd"/>
+                    <div class="card-body">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <label for="apiUrl">URL de l'API :</label>
+                            </div>
+                            <div class="col-auto flex-grow-1">
+                                <input name="apiKeyInput" id="apiUrl" class="form-control"
+                                       value="http://localhost:8733/Design_Time_Addresses/RoutingService/BikeRoutingService/">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="card" id="map">
 
+
+        <div class="row">
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <input type="text" class="form-control" id="posStart" placeholder="De..."/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <input type="text" class="form-control" id="posEnd" placeholder="À..."/>
+                            </div>
+                        </div>
+                        <div id="routeInfo" style="display: none">
+                            <hr>
+                            <ul id="steps" class="list-group">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-9">
+                <div class="card" id="map">
+
+                </div>
+            </div>
         </div>
+
+
     </div>
 </main>
 

@@ -41,13 +41,6 @@ $(async function () {
         })
     });
 
-    const lineStyle = new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: '#ffcc33',
-            width: 10
-        })
-    });
-
     async function apiGet(endpoint) {
         return await (await fetch($("#apiUrl").val() + "rest/" + endpoint)).json();
     }
@@ -125,6 +118,10 @@ $(async function () {
     let computing = false;
     let routeLayer = null;
 
+    const colors = ["red", "green", "blue"];
+
+    const steplist = $("#steps");
+
     async function updateRoute() {
         if (computing) return;
         if (!acStart.value || !acEnd.value) {
@@ -137,19 +134,37 @@ $(async function () {
         const start = {"longitude": startLon, "latitude": startLat};
         const end = {"longitude": endLon, "latitude": endLat};
         const geojson = await apiPost("GetRoute", {start, end});
-        const vectorSource = new ol.source.Vector({
-            features: geojson.map(o => new ol.format.GeoJSON().readFeatures(JSON.parse(o), {
+        const group = new ol.layer.Group();
+        const features = [];
+        const steps = [];
+        for (let [i, path] of Object.entries(geojson)) {
+            const data = JSON.parse(path);
+            steps.push(...data.features[0].properties.segments[0].steps);
+            const points = new ol.format.GeoJSON().readFeatures(data, {
                 dataProjection: 'EPSG:4326',
                 featureProjection: 'EPSG:3857',
-            })).flat(),
-        });
+            });
+            features.push(...points);
+            const vectorSource = new ol.source.Vector({
+                features: points
+            });
+            const layer = new ol.layer.Vector({
+                source: vectorSource,
+                style: [new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: colors[i],
+                        width: 10
+                    })
+                })]
+            });
+            group.getLayers().push(layer);
+        }
+        for (let step of steps) {
+            steplist.append($("<li>").addClass("list-group-item").text(step.instruction))
+        }
         map.removeLayer(routeLayer);
-        routeLayer = new ol.layer.Vector({
-            source: vectorSource,
-            style: [lineStyle]
-        });
-        map.addLayer(routeLayer);
-        map.getView().fit(vectorSource.getExtent(), {
+        map.addLayer(routeLayer = group);
+        map.getView().fit(new ol.source.Vector({features}).getExtent(), {
             size: map.getSize(),
             padding: [50, 50, 50, 50]
         });

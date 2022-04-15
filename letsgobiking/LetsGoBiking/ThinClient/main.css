@@ -2,6 +2,6 @@
     height: 70vh;
 }
 
-.container > * {
+main > .container > * {
     margin: 15pt 0;
 }
