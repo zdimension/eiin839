@@ -11,14 +11,14 @@ namespace ProxyService
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            BodyStyle = WebMessageBodyStyle.Wrapped,
+            BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "GetStations")]
         Task<string> GetStationsAsync();
 
         [OperationContract]
         [WebInvoke(Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            BodyStyle = WebMessageBodyStyle.Wrapped,
+            BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "GetStation/{id}")]
         Task<string> GetStationAsync(string id);
     }
