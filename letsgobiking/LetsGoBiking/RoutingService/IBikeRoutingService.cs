@@ -33,22 +33,12 @@ namespace RoutingService
         Task<string[]> GetRoute(RouteParameters points);
 
         [OperationContract]
-        [WebInvoke(Method = "OPTIONS",
-            UriTemplate = "GetRoute")]
-        void CorsHack();
-
-        [OperationContract]
         [WebInvoke(Method = "POST",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "Geocode")]
         Task<string> Geocode(GeocodeParameters geo);
-
-        [OperationContract]
-        [WebInvoke(Method = "OPTIONS",
-            UriTemplate = "Geocode")]
-        void CorsHack2();
     }
 
     [DataContract]

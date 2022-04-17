@@ -85,10 +85,6 @@ namespace RoutingService
             return routes.Select(t => t.Result).ToArray();
         }
 
-        public void CorsHack()
-        {
-        }
-
         public async Task<string> Geocode(GeocodeParameters geo)
         {
             return await OpenRouteAPI.GetAsync("geocode/autocomplete", new()
@@ -98,10 +94,6 @@ namespace RoutingService
                 ["focus.point.lat"] = geo.focus.latitude,
                 ["sources"] = "openstreetmap"
             });
-        }
-
-        public void CorsHack2()
-        {
         }
     }
 }
