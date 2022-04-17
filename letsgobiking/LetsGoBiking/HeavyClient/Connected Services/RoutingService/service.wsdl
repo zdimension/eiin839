@@ -1,38 +1,79 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" name="RoutingService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" name="BikeRoutingService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import namespace="http://tempuri.org/" />
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/RoutingService" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IRoutingService_GetData_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetData" />
+  <wsdl:message name="IBikeRoutingService_GetStations_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStations" />
   </wsdl:message>
-  <wsdl:message name="IRoutingService_GetData_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetDataResponse" />
+  <wsdl:message name="IBikeRoutingService_GetStations_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStationsResponse" />
   </wsdl:message>
-  <wsdl:message name="IRoutingService_GetDataUsingDataContract_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetDataUsingDataContract" />
+  <wsdl:message name="IBikeRoutingService_GetStation_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStation" />
   </wsdl:message>
-  <wsdl:message name="IRoutingService_GetDataUsingDataContract_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetDataUsingDataContractResponse" />
+  <wsdl:message name="IBikeRoutingService_GetStation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStationResponse" />
   </wsdl:message>
-  <wsdl:portType name="IRoutingService">
-    <wsdl:operation name="GetData">
-      <wsdl:input wsaw:Action="http://tempuri.org/IRoutingService/GetData" message="tns:IRoutingService_GetData_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IRoutingService/GetDataResponse" message="tns:IRoutingService_GetData_OutputMessage" />
+  <wsdl:message name="IBikeRoutingService_GetRoute_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRoute" />
+  </wsdl:message>
+  <wsdl:message name="IBikeRoutingService_GetRoute_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRouteResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBikeRoutingService_CorsHack_InputMessage">
+    <wsdl:part name="parameters" element="tns:CorsHack" />
+  </wsdl:message>
+  <wsdl:message name="IBikeRoutingService_CorsHack_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CorsHackResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBikeRoutingService_Geocode_InputMessage">
+    <wsdl:part name="parameters" element="tns:Geocode" />
+  </wsdl:message>
+  <wsdl:message name="IBikeRoutingService_Geocode_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GeocodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBikeRoutingService_CorsHack2_InputMessage">
+    <wsdl:part name="parameters" element="tns:CorsHack2" />
+  </wsdl:message>
+  <wsdl:message name="IBikeRoutingService_CorsHack2_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CorsHack2Response" />
+  </wsdl:message>
+  <wsdl:portType name="IBikeRoutingService">
+    <wsdl:operation name="GetStations">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBikeRoutingService/GetStations" message="tns:IBikeRoutingService_GetStations_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBikeRoutingService/GetStationsResponse" message="tns:IBikeRoutingService_GetStations_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetDataUsingDataContract">
-      <wsdl:input wsaw:Action="http://tempuri.org/IRoutingService/GetDataUsingDataContract" message="tns:IRoutingService_GetDataUsingDataContract_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IRoutingService/GetDataUsingDataContractResponse" message="tns:IRoutingService_GetDataUsingDataContract_OutputMessage" />
+    <wsdl:operation name="GetStation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBikeRoutingService/GetStation" message="tns:IBikeRoutingService_GetStation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBikeRoutingService/GetStationResponse" message="tns:IBikeRoutingService_GetStation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRoute">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBikeRoutingService/GetRoute" message="tns:IBikeRoutingService_GetRoute_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBikeRoutingService/GetRouteResponse" message="tns:IBikeRoutingService_GetRoute_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CorsHack">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBikeRoutingService/CorsHack" message="tns:IBikeRoutingService_CorsHack_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBikeRoutingService/CorsHackResponse" message="tns:IBikeRoutingService_CorsHack_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Geocode">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBikeRoutingService/Geocode" message="tns:IBikeRoutingService_Geocode_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBikeRoutingService/GeocodeResponse" message="tns:IBikeRoutingService_Geocode_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CorsHack2">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBikeRoutingService/CorsHack2" message="tns:IBikeRoutingService_CorsHack2_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBikeRoutingService/CorsHack2Response" message="tns:IBikeRoutingService_CorsHack2_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="BasicHttpBinding_IRoutingService" type="tns:IRoutingService">
+  <wsdl:binding name="BasicHttpBinding_IBikeRoutingService" type="tns:IBikeRoutingService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="GetData">
-      <soap:operation soapAction="http://tempuri.org/IRoutingService/GetData" style="document" />
+    <wsdl:operation name="GetStations">
+      <soap:operation soapAction="http://tempuri.org/IBikeRoutingService/GetStations" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -40,8 +81,44 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetDataUsingDataContract">
-      <soap:operation soapAction="http://tempuri.org/IRoutingService/GetDataUsingDataContract" style="document" />
+    <wsdl:operation name="GetStation">
+      <soap:operation soapAction="http://tempuri.org/IBikeRoutingService/GetStation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRoute">
+      <soap:operation soapAction="http://tempuri.org/IBikeRoutingService/GetRoute" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CorsHack">
+      <soap:operation soapAction="http://tempuri.org/IBikeRoutingService/CorsHack" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Geocode">
+      <soap:operation soapAction="http://tempuri.org/IBikeRoutingService/Geocode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CorsHack2">
+      <soap:operation soapAction="http://tempuri.org/IBikeRoutingService/CorsHack2" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -50,9 +127,9 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="RoutingService">
-    <wsdl:port name="BasicHttpBinding_IRoutingService" binding="tns:BasicHttpBinding_IRoutingService">
-      <soap:address location="http://localhost:8733/Design_Time_Addresses/RoutingService/RoutingService/" />
+  <wsdl:service name="BikeRoutingService">
+    <wsdl:port name="BasicHttpBinding_IBikeRoutingService" binding="tns:BasicHttpBinding_IBikeRoutingService">
+      <soap:address location="http://localhost:8733/Design_Time_Addresses/RoutingService/BikeRoutingService/" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

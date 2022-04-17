@@ -1,10 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/RoutingService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/RoutingService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType name="CompositeType">
+  <xs:complexType name="ArrayOfJCDecauxStation">
     <xs:sequence>
-      <xs:element minOccurs="0" name="BoolValue" type="xs:boolean" />
-      <xs:element minOccurs="0" name="StringValue" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="JCDecauxStation" nillable="true" type="tns:JCDecauxStation" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="CompositeType" nillable="true" type="tns:CompositeType" />
+  <xs:element name="ArrayOfJCDecauxStation" nillable="true" type="tns:ArrayOfJCDecauxStation" />
+  <xs:complexType name="JCDecauxStation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="banking" type="xs:boolean" />
+      <xs:element minOccurs="0" name="bonus" type="xs:boolean" />
+      <xs:element minOccurs="0" name="connected" type="xs:boolean" />
+      <xs:element minOccurs="0" name="contractName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="lastUpdate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="number" type="xs:int" />
+      <xs:element minOccurs="0" name="position" nillable="true" type="tns:JCDecauxPosition" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="totalStands" nillable="true" type="tns:JCDecauxStandInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JCDecauxStation" nillable="true" type="tns:JCDecauxStation" />
+  <xs:complexType name="JCDecauxPosition">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="latitude" type="xs:double" />
+      <xs:element minOccurs="0" name="longitude" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JCDecauxPosition" nillable="true" type="tns:JCDecauxPosition" />
+  <xs:complexType name="JCDecauxStandInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="availabilities" nillable="true" type="tns:JCDecauxStandAvailability" />
+      <xs:element minOccurs="0" name="capacity" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JCDecauxStandInfo" nillable="true" type="tns:JCDecauxStandInfo" />
+  <xs:complexType name="JCDecauxStandAvailability">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="bikes" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="JCDecauxStandAvailability" nillable="true" type="tns:JCDecauxStandAvailability" />
+  <xs:complexType name="RouteParameters">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="end" nillable="true" type="tns:JCDecauxPosition" />
+      <xs:element minOccurs="0" name="start" nillable="true" type="tns:JCDecauxPosition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RouteParameters" nillable="true" type="tns:RouteParameters" />
+  <xs:complexType name="GeocodeParameters">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="focus" nillable="true" type="tns:JCDecauxPosition" />
+      <xs:element minOccurs="0" name="query" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GeocodeParameters" nillable="true" type="tns:GeocodeParameters" />
 </xs:schema>
