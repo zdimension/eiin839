@@ -1,17 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Shared;
+﻿using Shared;
 
-namespace ProxyService
-{
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            Utilities.StartService<ProxyService>();
-        }
-    }
-}
+Utilities.StartService<ProxyService.ProxyService>();
