@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RoutingService.ProxyService;
 using static Shared.Utilities;
 
@@ -32,8 +34,13 @@ namespace RoutingService
 
         private async Task<JCDecauxStation> ClosestAvailable(JCDecauxPosition pos)
         {
-            var stations = await GetStationsAsync();
-            foreach (var s1 in stations.OrderBy(s => s.position.Distance(pos)))
+            var stations = (await GetStationsAsync()).OrderBy(s => s.position.Distance(pos)).ToArray();
+            var couples = (await Task.WhenAll(stations.Take(5)
+                .Select(async station => (station, 
+                    (await GetRouteWalking(pos, station.position))["features"][0]["properties"]["summary"]["distance"]))))
+                .OrderBy(s => s.Item2.Value<double>())
+                .Select(x => x.station);
+            foreach (var s1 in couples.Concat(stations.Skip(5)))
             {
                 if ((await GetStationAsync(s1.number.ToString())).totalStands.availabilities.bikes > 0) 
                     return s1;
@@ -43,28 +50,28 @@ namespace RoutingService
             return null;
         }
 
-        private async Task<string> GetRouteFull(string type, JCDecauxPosition start, JCDecauxPosition end)
+        private async Task<JObject> GetRouteFull(string type, JCDecauxPosition start, JCDecauxPosition end)
         {
-            return await OpenRouteAPI.GetAsync($"v2/directions/{type}", new()
+            return JsonConvert.DeserializeObject<JObject>(await OpenRouteAPI.GetAsyncString($"v2/directions/{type}", new()
             {
                 ["start"] = $"{start.longitude},{start.latitude}",
                 ["end"] = $"{end.longitude},{end.latitude}"
-            });
+            }));
         }
 
-        private async Task<string> GetRouteWalking(JCDecauxPosition start, JCDecauxPosition end)
+        private async Task<JObject> GetRouteWalking(JCDecauxPosition start, JCDecauxPosition end)
         {
             return await GetRouteFull("foot-walking", start, end);
         }
 
-        public async Task<string[]> GetRoute(RouteParameters points)
+        public async Task<Stream> GetRoute(RouteParameters points)
         {
             var closestStart = await ClosestAvailable(points.start);
 
             if (closestStart == null)
             {
                 // no available stations
-                return new[] { await GetRouteWalking(points.start, points.end) };
+                return new[] { await GetRouteWalking(points.start, points.end) }.AsStream();
             }
 
             var closestEnd = await ClosestAvailable(points.end);
@@ -72,7 +79,7 @@ namespace RoutingService
             if (closestEnd == closestStart)
             {
                 // only one available station
-                return new[] { await GetRouteWalking(points.start, points.end) };
+                return new[] { await GetRouteWalking(points.start, points.end) }.AsStream();
             }
 
             var routes = new[]
@@ -81,11 +88,10 @@ namespace RoutingService
                 GetRouteFull("cycling-regular", closestStart.position, closestEnd.position),
                 GetRouteWalking(closestEnd.position, points.end)
             };
-            await Task.WhenAll(routes);
-            return routes.Select(t => t.Result).ToArray();
+            return (await Task.WhenAll(routes)).AsStream();
         }
 
-        public async Task<string> Geocode(GeocodeParameters geo)
+        public async Task<Stream> Geocode(GeocodeParameters geo)
         {
             return await OpenRouteAPI.GetAsync("geocode/autocomplete", new()
             {

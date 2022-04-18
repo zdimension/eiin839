@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.ServiceModel;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace Shared
 {
@@ -28,6 +30,11 @@ namespace Shared
             Log($"Listening on {string.Join(", ", svc.BaseAddresses.Select(u => u.ToString()))}");
             Log("Press <enter> to stop");
             Console.ReadLine();
+        }
+
+        public static Stream AsStream<T>(this T obj)
+        {
+            return new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj)));
         }
     }
 }

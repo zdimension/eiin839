@@ -15,7 +15,7 @@ function deg2rad(deg) {
     return deg * Math.PI / 180;
 }
 
-$(async function () {
+$(function () {
     const map = new ol.Map({
         target: 'map', // <-- This is the id of the div in which the map will be built.
         layers: [
@@ -31,15 +31,15 @@ $(async function () {
 
     });
 
-    const bikestyle = new ol.style.Style({
+    const [m_bike, m_from, m_to] = ["bike", "a", "b"].map(name => new ol.style.Style({
         image: new ol.style.Icon({
             anchor: [0.5, 1],
-            scale: [0.08, 0.08],
+            scale: [0.32, 0.32],
             anchorXUnits: 'fraction',
             anchorYUnits: 'fraction',
-            src: 'marker.png'
+            src: `marker_${name}.png`
         })
-    });
+    }));
 
     async function apiGet(endpoint) {
         return await (await fetch($("#apiUrl").val() + "rest/" + endpoint)).json();
@@ -55,23 +55,25 @@ $(async function () {
         })).json();
     }
 
-    const stations = await apiGet("GetStations");
-    const stationsSource = new ol.source.Vector({
-        features: stations.map(station => {
-            return new ol.Feature({
-                geometry: new ol.geom.Point(ol.proj.fromLonLat([station.position.longitude, station.position.latitude])),
-                name: station.name
-            });
-        }),
-    });
-    map.addLayer(new ol.layer.Vector({
-        source: stationsSource,
-        style: bikestyle,
-        zIndex: 10
-    }));
-    map.getView().fit(stationsSource.getExtent(), {
-        size: map.getSize(),
-        padding: [50, 50, 50, 50]
+    $(async function() {
+        const stations = await apiGet("GetStations");
+        const stationsSource = new ol.source.Vector({
+            features: stations.map(station => {
+                return new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat([station.position.longitude, station.position.latitude])),
+                    name: station.name
+                });
+            }),
+        });
+        map.addLayer(new ol.layer.Vector({
+            source: stationsSource,
+            style: m_bike,
+            zIndex: 10
+        }));
+        map.getView().fit(stationsSource.getExtent(), {
+            size: map.getSize(),
+            padding: [50, 50, 50, 50]
+        });
     });
 
     let requested = false;
@@ -87,13 +89,13 @@ $(async function () {
         } else {
             loading = true;
             const [longitude, latitude] = ol.proj.toLonLat(map.getView().getCenter());
-            const geocode = JSON.parse(await apiPost("Geocode", {
+            const geocode = await apiPost("Geocode", {
                 query: value,
                 focus: {
                     longitude,
                     latitude
                 }
-            }));
+            });
             ac.setData(geocode.features.map(f => {
                 return {
                     label: f.properties.label,
@@ -137,8 +139,7 @@ $(async function () {
         const group = new ol.layer.Group();
         const features = [];
         const steps = [];
-        for (let [i, path] of Object.entries(geojson)) {
-            const data = JSON.parse(path);
+        for (let [i, data] of Object.entries(geojson)) {
             steps.push(...data.features[0].properties.segments[0].steps);
             const points = new ol.format.GeoJSON().readFeatures(data, {
                 dataProjection: 'EPSG:4326',
@@ -159,6 +160,32 @@ $(async function () {
             });
             group.getLayers().push(layer);
         }
+        const feature_from = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([startLon, startLat])),
+            name: "Origine"
+        });
+        const feature_to = new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([endLon, endLat])),
+            name: "Destination"
+        });
+        features.push(feature_from, feature_to);
+        group.getLayers().extend([new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: [
+                    feature_from,
+                ],
+            }),
+            zIndex: 11,
+            style: m_from
+        }), new ol.layer.Vector({
+            source: new ol.source.Vector({
+                features: [
+                    feature_to
+                ],
+            }),
+            zIndex: 11,
+            style: m_to
+        })]);
         steplist.empty();
         for (let step of steps) {
             steplist.append($("<li>").addClass("list-group-item").text(step.instruction))

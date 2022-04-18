@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
@@ -30,7 +31,7 @@ namespace RoutingService
             ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "GetRoute")]
-        Task<string[]> GetRoute(RouteParameters points);
+        Task<Stream> GetRoute(RouteParameters points);
 
         [OperationContract]
         [WebInvoke(Method = "POST",
@@ -38,7 +39,7 @@ namespace RoutingService
             ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare,
             UriTemplate = "Geocode")]
-        Task<string> Geocode(GeocodeParameters geo);
+        Task<Stream> Geocode(GeocodeParameters geo);
     }
 
     [DataContract]
