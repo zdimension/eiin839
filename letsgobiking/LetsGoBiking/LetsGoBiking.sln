@@ -11,11 +11,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeavyClient", "HeavyClient\HeavyClient.csproj", "{ACEB5E56-F366-4F51-A634-6DCAB81A5F7C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{00741716-1F4D-425B-A260-576B8FD23E83} = {00741716-1F4D-425B-A260-576B8FD23E83}
+		{6A4A1358-3385-431B-9FA1-652F98E38288} = {6A4A1358-3385-431B-9FA1-652F98E38288}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProxyService", "ProxyService\ProxyService.csproj", "{6A4A1358-3385-431B-9FA1-652F98E38288}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{F32C0202-947D-4AA9-A35E-47F254A70F69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{F32C0202-947D-4AA9-A35E-47F254A70F69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -25,7 +25,7 @@ $(function () {
         ],
 
         view: new ol.View({
-            center: ol.proj.fromLonLat([7.0985774, 43.6365619]), // <-- Those are the GPS coordinates to center the map to.
+            center: ol.proj.fromLonLat([43.2856969, 5.3925819]), // <-- Those are the GPS coordinates to center the map to.
             zoom: 10 // You can adjust the default zoom.
         })
 
