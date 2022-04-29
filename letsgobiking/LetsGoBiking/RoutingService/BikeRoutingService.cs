@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace RoutingService
             return JsonConvert.DeserializeObject<JCDecauxStation>(await _proxyService.GetStationAsync(id));
         }
 
-        private async Task<JCDecauxStation> ClosestAvailable(JCDecauxPosition pos)
+        private async Task<JCDecauxStation> ClosestAvailable(JCDecauxPosition pos, Func<JCDecauxStation, int> availGetter)
         {
             var stations = (await GetStationsAsync()).OrderBy(s => s.position.Distance(pos)).ToArray();
             var couples = (await Task.WhenAll(stations.Take(5)
@@ -42,7 +43,7 @@ namespace RoutingService
                 .Select(x => x.station);
             foreach (var s1 in couples.Concat(stations.Skip(5)))
             {
-                if ((await GetStationAsync(s1.number.ToString())).totalStands.availabilities.bikes > 0) 
+                if (availGetter(await GetStationAsync(s1.number.ToString())) > 0) 
                     return s1;
                 Log($"Station {s1.number} unavailable, trying next one");
             }
@@ -66,7 +67,7 @@ namespace RoutingService
 
         public async Task<Stream> GetRoute(RouteParameters points)
         {
-            var closestStart = await ClosestAvailable(points.start);
+            var closestStart = await ClosestAvailable(points.start, s => s.totalStands.availabilities.bikes);
 
             if (closestStart == null)
             {
@@ -74,7 +75,7 @@ namespace RoutingService
                 return new[] { await GetRouteWalking(points.start, points.end) }.AsStream();
             }
 
-            var closestEnd = await ClosestAvailable(points.end);
+            var closestEnd = await ClosestAvailable(points.end, s => s.totalStands.availabilities.stands);
 
             if (closestEnd == closestStart)
             {

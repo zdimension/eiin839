@@ -30,5 +30,6 @@ namespace RoutingService
     public class JCDecauxStandAvailability
     {
         [DataMember] public int bikes { get; set; }
+        [DataMember] public int stands { get; set; }
     }
 }

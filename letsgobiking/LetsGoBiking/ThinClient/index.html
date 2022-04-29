@@ -9,6 +9,7 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.14.1/css/ol.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
@@ -40,13 +41,18 @@
 
 
         <div class="row" id="main-row">
-            <div class="col-3">
+            <div class="col-4">
                 <div class="card">
                     <div class="card-body d-flex flex-column overflow-hidden">
-                        <div class="row mb-2">
-                            <div class="col-12">
-                                <input type="text" class="form-control" id="posStart" placeholder="De..."/>
-                            </div>
+                        <div class="mb-2">
+							<div class="input-group">	
+								<input type="text" class="form-control" id="posStart" placeholder="De..."/>
+								<div class="input-group-append">
+									<button class="btn btn-primary" style="border-radius: 0 0.25rem 0.25rem 0" id="fromGps">
+										<i class="fas fa-location-crosshairs"></i>
+									</button>
+								</div>
+							</div>
                         </div>
                         <div class="row">
                             <div class="col-12">
@@ -64,7 +70,7 @@
                 </div>
 
             </div>
-            <div class="col-9">
+            <div class="col-8">
                 <div class="card" id="map">
 
                 </div>

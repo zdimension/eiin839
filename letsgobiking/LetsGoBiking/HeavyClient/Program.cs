@@ -12,17 +12,18 @@ Console.WriteLine("Starting benchmark...");
 BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
 
 [MinColumn, MaxColumn]
+[SimpleJob(launchCount: 3, warmupCount: 10, targetCount: 30, invocationCount: 10)]
 public class Bench
 {
     private readonly IBikeRoutingService client = new BikeRoutingServiceClient();
     
-    [Benchmark]
+    [Benchmark(OperationsPerInvoke = 10)]
     public void GetStations()
     {
         client.GetStations();
     }
 
-    [Benchmark]
+    [Benchmark(OperationsPerInvoke = 10)]
     public void GetStation()
     {
         client.GetStation("9087");

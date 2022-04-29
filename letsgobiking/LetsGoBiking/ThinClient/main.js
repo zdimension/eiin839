@@ -227,4 +227,22 @@ $(function () {
             }
         }
     });
+    
+    $(acStart.field).click(function() {
+		if (this.value === "<Position actuelle>") {
+			this.value = "";
+		}
+    });
+    
+    $("#fromGps").click(function() {
+		navigator.geolocation.getCurrentPosition(function({coords}) {
+			acStart.field.value = "<Position actuelle>";
+			acStart.value = [coords.longitude, coords.latitude];
+			updateRoute();
+		}, function() { }, {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		});
+    });
 });
