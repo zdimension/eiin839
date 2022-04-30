@@ -35,13 +35,16 @@ namespace RoutingService
 
         private async Task<JCDecauxStation> ClosestAvailable(JCDecauxPosition pos, Func<JCDecauxStation, int> availGetter)
         {
+            // closest by raw distance
             var stations = (await GetStationsAsync()).OrderBy(s => s.position.Distance(pos)).ToArray();
-            var couples = (await Task.WhenAll(stations.Take(5)
+            var stationsDistances = stations.Take(5)
                 .Select(async station => (station, 
-                    (await GetRouteWalking(pos, station.position))["features"][0]["properties"]["summary"]["distance"]))))
+                    (await GetRouteWalking(pos, station.position))["features"][0]["properties"]["summary"]["distance"]));
+            // closest by walking distance
+            var closest = (await Task.WhenAll(stationsDistances))
                 .OrderBy(s => s.Item2.Value<double>())
                 .Select(x => x.station);
-            foreach (var s1 in couples.Concat(stations.Skip(5)))
+            foreach (var s1 in closest.Concat(stations.Skip(5)))
             {
                 if (availGetter(await GetStationAsync(s1.number.ToString())) > 0) 
                     return s1;
@@ -63,6 +66,11 @@ namespace RoutingService
         private async Task<JObject> GetRouteWalking(JCDecauxPosition start, JCDecauxPosition end)
         {
             return await GetRouteFull("foot-walking", start, end);
+        }
+        
+        private async Task<JObject> GetRouteCycling(JCDecauxPosition start, JCDecauxPosition end)
+        {
+            return await GetRouteFull("cycling-regular", start, end);
         }
 
         public async Task<Stream> GetRoute(RouteParameters points)
@@ -86,7 +94,7 @@ namespace RoutingService
             var routes = new[]
             {
                 GetRouteWalking(points.start, closestStart.position),
-                GetRouteFull("cycling-regular", closestStart.position, closestEnd.position),
+                GetRouteCycling(closestStart.position, closestEnd.position),
                 GetRouteWalking(closestEnd.position, points.end)
             };
             return (await Task.WhenAll(routes)).AsStream();
