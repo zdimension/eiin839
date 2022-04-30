@@ -14,7 +14,6 @@ namespace RoutingService
         [DataMember] public bool banking { get; set; }
         [DataMember] public bool bonus { get; set; }
         [DataMember] public string status { get; set; }
-        [DataMember] public DateTime lastUpdate { get; set; }
         [DataMember] public bool connected { get; set; }
         [DataMember] public JCDecauxStandInfo totalStands { get; set; }
     }

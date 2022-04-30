@@ -1,33 +1,30 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Threading;
-using System.Threading.Tasks;
-using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Engines;
-using BenchmarkDotNet.Running;
 using HeavyClient.RoutingService;
 
+Console.WriteLine("Waiting for services to start up...");
+Thread.Sleep(5000);
 Console.WriteLine("Starting benchmark...");
 
-BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
+var client = new BikeRoutingServiceClient();
 
-[MinColumn, MaxColumn]
-[SimpleJob(launchCount: 3, warmupCount: 10, targetCount: 30, invocationCount: 10)]
-public class Bench
+Bench(() => client.GetStations());
+Bench(() => client.GetStation("9087"));
+
+void Bench<T>(Expression<Func<T>> code)
 {
-    private readonly IBikeRoutingService client = new BikeRoutingServiceClient();
-    
-    [Benchmark(OperationsPerInvoke = 10)]
-    public void GetStations()
+    var comp = code.Compile();
+    Console.WriteLine(code.Body);
+    var sw = new Stopwatch();
+    for (var i = 0; i < 5; i++)
     {
-        client.GetStations();
-    }
-
-    [Benchmark(OperationsPerInvoke = 10)]
-    public void GetStation()
-    {
-        client.GetStation("9087");
+        Console.Write("[{0}] ", i);
+        sw.Start();
+        comp();
+        sw.Stop();
+        Console.WriteLine("{0} ms", sw.ElapsedMilliseconds);
+        sw.Reset();
     }
 }
-
-
