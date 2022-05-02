@@ -1,22 +1,21 @@
 ﻿using System.Threading.Tasks;
 using static Shared.Utilities;
 
-namespace ProxyService
+namespace ProxyService;
+
+public class ProxyService : IProxyService
 {
-    public class ProxyService : IProxyService
+    private const string ApiCity = "marseille";
+
+    public async Task<string> GetStationsAsync()
     {
-        private static readonly string _apiCity = "marseille";
+        Log("");
+        return await JCDecauxAPI.GetAsync("stations", new() { ["contract"] = ApiCity }, false);
+    }
 
-        public async Task<string> GetStationsAsync()
-        {
-            Log("");
-            return await JCDecauxAPI.GetAsync("stations", new() { ["contract"] = _apiCity }, false);
-        }
-
-        public async Task<string> GetStationAsync(string id)
-        {
-            Log(id);
-            return await JCDecauxAPI.GetAsync("stations/" + id, new() { ["contract"] = _apiCity });
-        }
+    public async Task<string> GetStationAsync(string id)
+    {
+        Log(id);
+        return await JCDecauxAPI.GetAsync("stations/" + id, new() { ["contract"] = ApiCity });
     }
 }
