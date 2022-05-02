@@ -13,6 +13,9 @@ var client = new BikeRoutingServiceClient();
 Bench(() => client.GetStations());
 Bench(() => client.GetStation("9087"));
 
+Console.WriteLine("Done");
+Console.ReadLine();
+
 void Bench<T>(Expression<Func<T>> code)
 {
     var comp = code.Compile();
