@@ -38,9 +38,6 @@ namespace HeavyClient.RoutingService {
         private string contractNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime lastUpdateField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string nameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -126,19 +123,6 @@ namespace HeavyClient.RoutingService {
                 if ((object.ReferenceEquals(this.contractNameField, value) != true)) {
                     this.contractNameField = value;
                     this.RaisePropertyChanged("contractName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime lastUpdate {
-            get {
-                return this.lastUpdateField;
-            }
-            set {
-                if ((this.lastUpdateField.Equals(value) != true)) {
-                    this.lastUpdateField = value;
-                    this.RaisePropertyChanged("lastUpdate");
                 }
             }
         }
@@ -352,6 +336,9 @@ namespace HeavyClient.RoutingService {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int bikesField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int standsField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -371,6 +358,19 @@ namespace HeavyClient.RoutingService {
                 if ((this.bikesField.Equals(value) != true)) {
                     this.bikesField = value;
                     this.RaisePropertyChanged("bikes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int stands {
+            get {
+                return this.standsField;
+            }
+            set {
+                if ((this.standsField.Equals(value) != true)) {
+                    this.standsField = value;
+                    this.RaisePropertyChanged("stands");
                 }
             }
         }
@@ -524,28 +524,16 @@ namespace HeavyClient.RoutingService {
         System.Threading.Tasks.Task<HeavyClient.RoutingService.JCDecauxStation> GetStationAsync(string id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBikeRoutingService/GetRoute", ReplyAction="http://tempuri.org/IBikeRoutingService/GetRouteResponse")]
-        string[] GetRoute(HeavyClient.RoutingService.RouteParameters points);
+        System.IO.Stream GetRoute(HeavyClient.RoutingService.RouteParameters points);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBikeRoutingService/GetRoute", ReplyAction="http://tempuri.org/IBikeRoutingService/GetRouteResponse")]
-        System.Threading.Tasks.Task<string[]> GetRouteAsync(HeavyClient.RoutingService.RouteParameters points);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBikeRoutingService/CorsHack", ReplyAction="http://tempuri.org/IBikeRoutingService/CorsHackResponse")]
-        void CorsHack();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBikeRoutingService/CorsHack", ReplyAction="http://tempuri.org/IBikeRoutingService/CorsHackResponse")]
-        System.Threading.Tasks.Task CorsHackAsync();
+        System.Threading.Tasks.Task<System.IO.Stream> GetRouteAsync(HeavyClient.RoutingService.RouteParameters points);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBikeRoutingService/Geocode", ReplyAction="http://tempuri.org/IBikeRoutingService/GeocodeResponse")]
-        string Geocode(HeavyClient.RoutingService.GeocodeParameters geo);
+        System.IO.Stream Geocode(HeavyClient.RoutingService.GeocodeParameters geo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBikeRoutingService/Geocode", ReplyAction="http://tempuri.org/IBikeRoutingService/GeocodeResponse")]
-        System.Threading.Tasks.Task<string> GeocodeAsync(HeavyClient.RoutingService.GeocodeParameters geo);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBikeRoutingService/CorsHack2", ReplyAction="http://tempuri.org/IBikeRoutingService/CorsHack2Response")]
-        void CorsHack2();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBikeRoutingService/CorsHack2", ReplyAction="http://tempuri.org/IBikeRoutingService/CorsHack2Response")]
-        System.Threading.Tasks.Task CorsHack2Async();
+        System.Threading.Tasks.Task<System.IO.Stream> GeocodeAsync(HeavyClient.RoutingService.GeocodeParameters geo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -591,36 +579,20 @@ namespace HeavyClient.RoutingService {
             return base.Channel.GetStationAsync(id);
         }
         
-        public string[] GetRoute(HeavyClient.RoutingService.RouteParameters points) {
+        public System.IO.Stream GetRoute(HeavyClient.RoutingService.RouteParameters points) {
             return base.Channel.GetRoute(points);
         }
         
-        public System.Threading.Tasks.Task<string[]> GetRouteAsync(HeavyClient.RoutingService.RouteParameters points) {
+        public System.Threading.Tasks.Task<System.IO.Stream> GetRouteAsync(HeavyClient.RoutingService.RouteParameters points) {
             return base.Channel.GetRouteAsync(points);
         }
         
-        public void CorsHack() {
-            base.Channel.CorsHack();
-        }
-        
-        public System.Threading.Tasks.Task CorsHackAsync() {
-            return base.Channel.CorsHackAsync();
-        }
-        
-        public string Geocode(HeavyClient.RoutingService.GeocodeParameters geo) {
+        public System.IO.Stream Geocode(HeavyClient.RoutingService.GeocodeParameters geo) {
             return base.Channel.Geocode(geo);
         }
         
-        public System.Threading.Tasks.Task<string> GeocodeAsync(HeavyClient.RoutingService.GeocodeParameters geo) {
+        public System.Threading.Tasks.Task<System.IO.Stream> GeocodeAsync(HeavyClient.RoutingService.GeocodeParameters geo) {
             return base.Channel.GeocodeAsync(geo);
-        }
-        
-        public void CorsHack2() {
-            base.Channel.CorsHack2();
-        }
-        
-        public System.Threading.Tasks.Task CorsHack2Async() {
-            return base.Channel.CorsHack2Async();
         }
     }
 }

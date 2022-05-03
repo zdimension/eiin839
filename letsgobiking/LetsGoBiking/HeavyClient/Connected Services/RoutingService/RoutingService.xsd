@@ -13,7 +13,6 @@
       <xs:element minOccurs="0" name="bonus" type="xs:boolean" />
       <xs:element minOccurs="0" name="connected" type="xs:boolean" />
       <xs:element minOccurs="0" name="contractName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="lastUpdate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="number" type="xs:int" />
       <xs:element minOccurs="0" name="position" nillable="true" type="tns:JCDecauxPosition" />
@@ -39,6 +38,7 @@
   <xs:complexType name="JCDecauxStandAvailability">
     <xs:sequence>
       <xs:element minOccurs="0" name="bikes" type="xs:int" />
+      <xs:element minOccurs="0" name="stands" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="JCDecauxStandAvailability" nillable="true" type="tns:JCDecauxStandAvailability" />

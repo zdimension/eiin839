@@ -26,7 +26,7 @@
     <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="3651e766-f8d3-48da-86c1-434e09569ff1" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/RoutingService/BikeRoutingService/mex" />
     <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="a0353eb3-39da-4798-9da9-d4e1e9cc2589" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/RoutingService/BikeRoutingService/mex" />
     <MetadataFile FileName="RoutingService.xsd" MetadataType="Schema" ID="0e7918ed-0f97-496d-a854-973c3e801f08" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/RoutingService/BikeRoutingService/mex" />
-    <MetadataFile FileName="Arrays.xsd" MetadataType="Schema" ID="2d6d52cd-2862-49d8-ad25-57e7a8d97870" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/RoutingService/BikeRoutingService/mex" />
+    <MetadataFile FileName="Message.xsd" MetadataType="Schema" ID="c91e1b80-ead4-41e4-bb03-bb78b2d13d3b" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/RoutingService/BikeRoutingService/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -5,7 +5,7 @@
       <xsd:import namespace="http://tempuri.org/" />
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/RoutingService" />
-      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import namespace="http://schemas.microsoft.com/Message" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IBikeRoutingService_GetStations_InputMessage">
@@ -26,23 +26,11 @@
   <wsdl:message name="IBikeRoutingService_GetRoute_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetRouteResponse" />
   </wsdl:message>
-  <wsdl:message name="IBikeRoutingService_CorsHack_InputMessage">
-    <wsdl:part name="parameters" element="tns:CorsHack" />
-  </wsdl:message>
-  <wsdl:message name="IBikeRoutingService_CorsHack_OutputMessage">
-    <wsdl:part name="parameters" element="tns:CorsHackResponse" />
-  </wsdl:message>
   <wsdl:message name="IBikeRoutingService_Geocode_InputMessage">
     <wsdl:part name="parameters" element="tns:Geocode" />
   </wsdl:message>
   <wsdl:message name="IBikeRoutingService_Geocode_OutputMessage">
     <wsdl:part name="parameters" element="tns:GeocodeResponse" />
-  </wsdl:message>
-  <wsdl:message name="IBikeRoutingService_CorsHack2_InputMessage">
-    <wsdl:part name="parameters" element="tns:CorsHack2" />
-  </wsdl:message>
-  <wsdl:message name="IBikeRoutingService_CorsHack2_OutputMessage">
-    <wsdl:part name="parameters" element="tns:CorsHack2Response" />
   </wsdl:message>
   <wsdl:portType name="IBikeRoutingService">
     <wsdl:operation name="GetStations">
@@ -57,17 +45,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IBikeRoutingService/GetRoute" message="tns:IBikeRoutingService_GetRoute_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBikeRoutingService/GetRouteResponse" message="tns:IBikeRoutingService_GetRoute_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="CorsHack">
-      <wsdl:input wsaw:Action="http://tempuri.org/IBikeRoutingService/CorsHack" message="tns:IBikeRoutingService_CorsHack_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IBikeRoutingService/CorsHackResponse" message="tns:IBikeRoutingService_CorsHack_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="Geocode">
       <wsdl:input wsaw:Action="http://tempuri.org/IBikeRoutingService/Geocode" message="tns:IBikeRoutingService_Geocode_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IBikeRoutingService/GeocodeResponse" message="tns:IBikeRoutingService_Geocode_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="CorsHack2">
-      <wsdl:input wsaw:Action="http://tempuri.org/IBikeRoutingService/CorsHack2" message="tns:IBikeRoutingService_CorsHack2_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IBikeRoutingService/CorsHack2Response" message="tns:IBikeRoutingService_CorsHack2_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IBikeRoutingService" type="tns:IBikeRoutingService">
@@ -99,26 +79,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="CorsHack">
-      <soap:operation soapAction="http://tempuri.org/IBikeRoutingService/CorsHack" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="Geocode">
       <soap:operation soapAction="http://tempuri.org/IBikeRoutingService/Geocode" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="CorsHack2">
-      <soap:operation soapAction="http://tempuri.org/IBikeRoutingService/CorsHack2" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
