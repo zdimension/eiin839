@@ -1,10 +1,18 @@
-# "Let's go Biking" project
+# "Let's go Biking" project
 
-## Environment
+## Environment
 
 The following environment variables must be set:
 - `JCDECAUX_API_KEY`
 - `OPENROUTE_API_KEY`
+
+## Configuration
+
+The JCDecaux contract to be used by the services can be changed in ProxyService.cs, line 8.
+
+```cs
+private const string ApiCity = "marseille";
+```
 
 ## Thin client
 
